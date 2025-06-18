@@ -1,0 +1,43 @@
+{
+  "manifest_version": 3,
+  "name": "XShot",
+  "version": "1.0",
+  "description": "Create clean, customizable snapshots of X (Twitter) posts in one click.",
+  "permissions": ["storage", "activeTab", "scripting"],
+  "host_permissions": ["https://twitter.com/*", "https://x.com/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://twitter.com/*", "https://x.com/*"],
+      "js": ["content/content.js"],
+      "css": ["content/content.css"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "editor/editor.html",
+        "editor/editor.css",
+        "editor/editor.js",
+        "editor/html2canvas.min.js"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "action": {
+    "default_icons": {
+      "16": "images/icon-16.png",
+      "48": "images/icon-48.png",
+      "128": "images/icon-128.png"
+    },
+    "default_icon": "images/XShot.png",
+    "default_title": "XShot"
+  },
+  "icons": {
+    "16": "images/icon-16.png",
+    "48": "images/icon-48.png",
+    "128": "images/icon-128.png"
+  }
+}

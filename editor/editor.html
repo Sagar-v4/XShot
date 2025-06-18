@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>XShot Snapshot Editor</title>
+    <link rel="stylesheet" href="editor.css" />
+  </head>
+  <body>
+    <div class="main-container">
+      <!-- The left side: where the snapshot is rendered -->
+      <div class="preview-area">
+        <div id="snapshot-container" class="light-theme">
+          <div class="tweet-header">
+            <img id="pfp" src="" alt="Profile Picture" />
+            <div class="user-info">
+              <div id="name" class="name"></div>
+              <div id="handle" class="handle"></div>
+            </div>
+          </div>
+          <div id="text" class="tweet-text"></div>
+          <div id="media-container"></div>
+          <div id="timestamp" class="timestamp"></div>
+        </div>
+      </div>
+
+      <!-- The right side: where the controls are -->
+      <div class="controls-area">
+        <h2>XShot Controls</h2>
+
+        <div class="control-group">
+          <label for="theme-select">Theme:</label>
+          <select id="theme-select">
+            <option value="light-theme" selected>Light</option>
+            <option value="dark-theme">Dark (Dim)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="dimension-select">Dimensions:</label>
+          <select id="dimension-select">
+            <option value="default" selected>Default</option>
+            <option value="instagram-post">Instagram Post (1080x1080)</option>
+            <option value="instagram-story">Instagram Story (1080x1920)</option>
+            <option value="youtube-thumb">YouTube Thumbnail (1280x720)</option>
+          </select>
+        </div>
+
+        <button id="download-btn">Download Snapshot</button>
+      </div>
+    </div>
+
+    <!-- We need the html2canvas library to create the image -->
+    <script src="html2canvas.min.js"></script>
+    <script src="editor.js"></script>
+  </body>
+</html>

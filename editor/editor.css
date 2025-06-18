@@ -1,0 +1,144 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+  background-color: #f0f2f5;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 50px;
+  min-height: 100vh;
+}
+
+.main-container {
+  display: flex;
+  gap: 40px;
+}
+
+.preview-area {
+  padding: 20px;
+}
+
+#snapshot-container {
+  padding: 20px;
+  border: 1px solid #cfd9de;
+  border-radius: 16px;
+  width: 550px; /* Default width */
+  box-sizing: border-box;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Light Theme */
+.light-theme {
+  background-color: #ffffff;
+  color: #0f1419;
+}
+.light-theme .handle,
+.light-theme .timestamp {
+  color: #536471;
+}
+.light-theme {
+  border-color: #cfd9de;
+}
+
+/* Dark Theme */
+.dark-theme {
+  background-color: #15202b;
+  color: #f7f9f9;
+}
+.dark-theme .handle,
+.dark-theme .timestamp {
+  color: #8899a6;
+}
+.dark-theme {
+  border-color: #38444d;
+}
+
+.tweet-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+#pfp {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  margin-right: 12px;
+}
+
+.user-info .name {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.user-info .handle {
+  font-size: 15px;
+}
+
+.tweet-text {
+  font-size: 20px;
+  line-height: 1.4;
+  white-space: pre-wrap; /* This preserves line breaks from Twitter */
+  word-wrap: break-word;
+}
+
+#media-container img {
+  width: 100%;
+  margin-top: 12px;
+  border-radius: 16px;
+  border: 1px solid #cfd9de;
+}
+.dark-theme #media-container img {
+  border-color: #38444d;
+}
+
+.timestamp {
+  font-size: 15px;
+  margin-top: 16px;
+}
+
+/* Controls Area */
+.controls-area {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 300px;
+}
+.controls-area h2 {
+  margin-top: 0;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+.control-group {
+  margin-bottom: 20px;
+}
+.control-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333;
+}
+select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+#download-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #1d9bf0;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+#download-btn:hover {
+  background-color: #1a8cd8;
+}
