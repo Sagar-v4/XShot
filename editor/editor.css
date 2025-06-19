@@ -56,8 +56,40 @@ body {
 
 .tweet-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  justify-content: space-between;
   margin-bottom: 12px;
+}
+.user-details-container {
+  display: flex;
+  align-items: center; /* Keeps pfp and user info aligned */
+}
+.post-on-x-header {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  font-weight: bold;
+  padding-top: 2px;
+}
+.x-logo {
+  scale: 1.2;
+}
+.post-on-x-header .x-logo {
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
+}
+.light-theme .post-on-x-header {
+  color: #536471;
+}
+.light-theme .post-on-x-header .x-logo {
+  fill: #000000;
+}
+.dark-theme .post-on-x-header {
+  color: #8899a6;
+}
+.dark-theme .post-on-x-header .x-logo {
+  fill: #ffffff;
 }
 
 #pfp {

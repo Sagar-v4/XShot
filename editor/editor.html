@@ -12,10 +12,23 @@
       <div class="preview-area">
         <div id="snapshot-container" class="light-theme">
           <div class="tweet-header">
-            <img id="pfp" src="" alt="Profile Picture" />
-            <div class="user-info">
-              <div id="name" class="name"></div>
-              <div id="handle" class="handle"></div>
+            <!-- This new container keeps the user details together on the left -->
+            <div class="user-details-container">
+              <img id="pfp" src="" alt="Profile Picture" />
+              <div class="user-info">
+                <div id="name" class="name"></div>
+                <div id="handle" class="handle"></div>
+              </div>
+            </div>
+            <!-- The "Post on X" header is now here, on the right -->
+            <div id="post-on-x-header" class="post-on-x-header">
+              <svg viewBox="0 0 24 24" class="x-logo">
+                <g>
+                  <path
+                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+                  ></path>
+                </g>
+              </svg>
             </div>
           </div>
           <div id="text" class="tweet-text"></div>
