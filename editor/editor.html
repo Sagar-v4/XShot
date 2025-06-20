@@ -2,26 +2,23 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>XShot Snapshot Editor</title>
+    <title>XShot Editor</title>
     <link rel="stylesheet" href="editor.css" />
   </head>
   <body>
     <div class="main-container">
-      <!-- The left side: where the snapshot is rendered -->
+      <!-- The Snapshot Preview Area -->
       <div class="preview-area">
-        <div id="snapshot-container" class="light-theme">
-          <div class="tweet-header">
-            <!-- This new container keeps the user details together on the left -->
-            <div class="user-details-container">
+        <div id="snapshot-container" class="theme-light">
+          <div class="snapshot-header">
+            <div class="user-info-container">
               <img id="pfp" src="" alt="Profile Picture" />
               <div class="user-info">
                 <div id="name" class="name"></div>
                 <div id="handle" class="handle"></div>
               </div>
             </div>
-            <!-- The "Post on X" header is now here, on the right -->
-            <div id="post-on-x-header" class="post-on-x-header">
+            <div class="x-logo-container">
               <svg viewBox="0 0 24 24" class="x-logo">
                 <g>
                   <path
@@ -31,51 +28,59 @@
               </svg>
             </div>
           </div>
-          <div id="text" class="tweet-text"></div>
-
-          <div id="media-container" class="media-container"></div>
-          <div id="card-container" class="card-container"></div>
-          <div id="poll-container" class="poll-container"></div>
-          <div id="quoted-tweet-container" class="quoted-tweet-container"></div>
-
-          <div id="timestamp" class="timestamp"></div>
+          <div id="main-content-container" class="snapshot-main">
+            <!-- The entire raw tweet content will be injected here -->
+          </div>
+          <div class="snapshot-footer">
+            <div id="timestamp-container"></div>
+          </div>
         </div>
       </div>
 
-      <!-- The right side: where the controls are -->
+      <!-- The Controls Area -->
       <div class="controls-area">
-        <h2>XShot Controls</h2>
+        <h2>Controls</h2>
 
         <div class="control-group">
-          <label for="theme-select">Theme:</label>
+          <label for="theme-select">Theme</label>
           <select id="theme-select">
-            <option value="light-theme" selected>Light</option>
-            <option value="dark-theme">Dark (Dim)</option>
+            <option value="theme-light" selected>Light</option>
+            <option value="theme-dim">Dim</option>
+            <option value="theme-dark">Dark</option>
           </select>
         </div>
 
         <div class="control-group">
-          <label for="dimension-select">Dimensions:</label>
+          <label for="dimension-select">Dimensions</label>
           <select id="dimension-select">
             <option value="default" selected>Default</option>
-            <option value="instagram-post">Instagram Post (1080x1080)</option>
-            <option value="instagram-story">Instagram Story (1080x1920)</option>
-            <option value="youtube-thumb">YouTube Thumbnail (1280x720)</option>
+            <option value="square">Square (1080x1080)</option>
+            <option value="portrait">Portrait (1080x1920)</option>
+            <option value="landscape">Landscape (1280x720)</option>
           </select>
+        </div>
+
+        <div class="control-group">
+          <label for="font-size-input">Post Font Size (px)</label>
+          <input
+            type="number"
+            id="font-size-input"
+            value="20"
+            min="12"
+            max="40"
+          />
         </div>
 
         <div class="control-group">
           <label for="text-only-checkbox" class="checkbox-label">
-            <input type="checkbox" id="text-only-checkbox" checked />
-            Text Only
+            <input type="checkbox" id="text-only-checkbox" />
+            Show Text Only
           </label>
         </div>
 
         <button id="download-btn">Download Snapshot</button>
       </div>
     </div>
-
-    <!-- We need the html2canvas library to create the image -->
     <script src="html2canvas.min.js"></script>
     <script src="editor.js"></script>
   </body>
