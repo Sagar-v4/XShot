@@ -1,4 +1,4 @@
-console.log("XShot v2: Content script loaded.");
+console.log("XShot: Content script loaded.");
 
 // This variable will hold a reference to the tweet we're interested in.
 let activeTweetArticle = null;
@@ -28,7 +28,6 @@ document.body.addEventListener(
   },
   true
 ); // Use capture phase to run our code first.
-
 
 // --- Part 2: The Function to Inject the Button ---
 function addSnapshotButton(menuElement, tweetArticle) {
@@ -117,6 +116,42 @@ observer.observe(document.body, {
   subtree: true,
 });
 
+function sanitizeTweetHTML(rawHTML) {
+  const tempDiv = document.createElement("div");
+  tempDiv.innerHTML = rawHTML;
+
+  // Remove any elements that Twitter uses for "Show more", etc.
+  tempDiv
+    .querySelectorAll('[data-testid="tweet-text-show-more-button"]')
+    .forEach((el) => el.remove());
+
+  let cleanedHTML = "";
+
+  const iterator = document.createNodeIterator(tempDiv, NodeFilter.SHOW_ALL);
+  let node;
+
+  while ((node = iterator.nextNode())) {
+    // This is the condition for TEXT nodes
+    if (node.nodeType === Node.TEXT_NODE) {
+      // THE CRITICAL FIX IS HERE:
+      // Only add the text if its parent is NOT a link (A tag),
+      // because if it is, we have already added it via outerHTML.
+      if (node.parentElement.tagName.toUpperCase() !== "A") {
+        cleanedHTML += node.textContent;
+      }
+    }
+    // This is the condition for ELEMENT nodes
+    else if (node.nodeType === Node.ELEMENT_NODE) {
+      const tagName = node.tagName.toUpperCase();
+      // We only keep the tags we explicitly want.
+      if (tagName === "A" || tagName === "IMG" || tagName === "BR") {
+        cleanedHTML += node.outerHTML;
+      }
+    }
+  }
+  return cleanedHTML;
+}
+
 // --- Part 4: The Scraper Function (NEW AND IMPROVED) ---
 function scrapeTweetData(tweetArticle) {
   try {
@@ -172,20 +207,91 @@ function scrapeTweetData(tweetArticle) {
         });
     }
 
-    // --- Tweet Text (Selector is reliable) ---
+    // --- Rich Text (CRITICAL for hashtags/mentions) ---
     const textElement = tweetArticle.querySelector('[data-testid="tweetText"]');
-    const text = textElement ? textElement.innerText : "";
+    let richText = "";
+    let plainText = "";
+    if (textElement) {
+      // This is the key change: we clean the HTML before storing it.
+      richText = sanitizeTweetHTML(textElement.innerHTML);
+      plainText = textElement.innerText;
+    }
 
-    // --- Media (Selector is reliable, with added quality improvement) ---
-    const tweetPhoto = tweetArticle.querySelector(
-      '[data-testid="tweetPhoto"] img'
+    // --- Media Scraping (Images, Videos, GIFs) ---
+    const mediaElements = tweetArticle.querySelectorAll(
+      '[data-testid="tweetPhoto"] img, [data-testid="videoPlayer"] video'
     );
-    const mediaUrl = tweetPhoto
-      ? tweetPhoto.src.replace(/name=\w+$/, "name=large")
-      : null;
+    const mediaUrls = Array.from(mediaElements).map((el) => {
+      return {
+        type: el.tagName === "IMG" ? "image" : "video",
+        url:
+          el.tagName === "IMG"
+            ? el.src.replace(/name=\w+$/, "name=large")
+            : el.poster, // get video thumbnail
+      };
+    });
 
-    const scrapedData = { name, handle, text, timestamp, pfpUrl, mediaUrl };
-    console.log("XShot Scraped Data:", scrapedData); // Vital for debugging
+    // --- Link Card Scraping ---
+    let card = null;
+    const cardWrapper = tweetArticle.querySelector(
+      '[data-testid="card.wrapper"]'
+    );
+    if (cardWrapper) {
+      const cardImage = cardWrapper.querySelector("img");
+      const cardText = cardWrapper.querySelector(
+        '[data-testid="card.layoutLarge.detail"]'
+      );
+      const cardTitle = cardWrapper.querySelector(
+        '[data-testid="card.layoutLarge.title"]'
+      );
+      card = {
+        imageUrl: cardImage ? cardImage.src : null,
+        title: cardTitle ? cardTitle.innerText : "",
+        description: cardText ? cardText.innerText : "",
+      };
+    }
+
+    // --- Poll Scraping ---
+    let poll = null;
+    const pollWrapper = tweetArticle.querySelector('[data-testid^="poll"]');
+    if (pollWrapper) {
+      const pollChoices = pollWrapper.querySelectorAll(
+        '[data-testid^="poll-choice-"]'
+      );
+      poll = Array.from(pollChoices).map((choice) => {
+        const label = choice.querySelector(".r-115f2pl"); // Class for the choice label
+        const percentage = choice.querySelector(".r-1jlq1w5"); // Class for the percentage
+        return {
+          label: label ? label.innerText : "",
+          percentage: percentage ? percentage.innerText : "0%",
+        };
+      });
+    }
+
+    // --- Quote Tweet Scraping (Recursive) ---
+    let quotedTweet = null;
+    const quotedArticle = tweetArticle.querySelector(
+      'div[role="link"] article[data-testid="tweet"]'
+    );
+    if (quotedArticle) {
+      console.log("XShot: Quoted tweet found. Scraping recursively.");
+      // Recursively call the scraper on the nested tweet
+      quotedTweet = scrapeTweetData(quotedArticle);
+    }
+
+    const scrapedData = {
+      name,
+      handle,
+      timestamp,
+      pfpUrl,
+      richText,
+      plainText,
+      mediaUrls,
+      card,
+      poll,
+      quotedTweet,
+    };
+    console.log("XShot Scraped Data:", scrapedData);
     return scrapedData;
   } catch (error) {
     console.error("XShot Scraping Error:", error);

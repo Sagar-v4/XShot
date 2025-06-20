@@ -32,7 +32,12 @@
             </div>
           </div>
           <div id="text" class="tweet-text"></div>
-          <div id="media-container"></div>
+
+          <div id="media-container" class="media-container"></div>
+          <div id="card-container" class="card-container"></div>
+          <div id="poll-container" class="poll-container"></div>
+          <div id="quoted-tweet-container" class="quoted-tweet-container"></div>
+
           <div id="timestamp" class="timestamp"></div>
         </div>
       </div>
@@ -57,6 +62,13 @@
             <option value="instagram-story">Instagram Story (1080x1920)</option>
             <option value="youtube-thumb">YouTube Thumbnail (1280x720)</option>
           </select>
+        </div>
+
+        <div class="control-group">
+          <label for="text-only-checkbox" class="checkbox-label">
+            <input type="checkbox" id="text-only-checkbox" checked />
+            Text Only
+          </label>
         </div>
 
         <button id="download-btn">Download Snapshot</button>
