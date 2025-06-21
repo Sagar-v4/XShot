@@ -91,6 +91,7 @@ function scrapeTweetData(tweetArticle) {
   let pfpUrl = "url_not_found";
   let timestamp = "Time not found";
   let mainContentContainer = "Content not found";
+  let quotedTweetData = null;
   try {
     // --- Header HTML (Grabs the container with PFP, name, handle, etc.) ---
     // --- Profile Picture (Selector is reliable) ---
@@ -120,10 +121,13 @@ function scrapeTweetData(tweetArticle) {
     }
 
     // --- Main Content HTML (Grabs the container with text, media, polls, etc.) ---
-    // 1. Find the stable text element, which exists in every tweet.
-    const tweetTextElement = tweetArticle.querySelector(
-      '[data-testid="tweetText"]'
+
+    const allTextElements = tweetArticle.querySelectorAll(
+      'div[data-testid="tweetText"]'
     );
+    // const mainTextElement = allTextElements[0];
+    // 1. Find the stable text element, which exists in every tweet.
+    const tweetTextElement = allTextElements[0];
 
     // 2. Select its direct parent. This container reliably holds the text, media, polls, etc.
     if (tweetTextElement) {
@@ -171,8 +175,63 @@ function scrapeTweetData(tweetArticle) {
       '[data-testid="card.wrapper"] [data-testid="cardPoll"]'
     );
 
+    // --- Quoted Post Scraper ---
+    // --- Check for and Scrape Quoted Tweet ---
+    const quoteElement = tweetArticle.querySelector(
+      'div[tabindex="0"][role="link"]'
+    );
+
+    if (quoteElement) {
+      console.log("XShot: Quoted tweet found!");
+      const q_userElement = quoteElement.querySelector(
+        'div[data-testid="User-Name"]'
+      );
+      const q_textElement = allTextElements[1]; // The second text element is the quote's text
+      const q_pfpElement = quoteElement.querySelector(
+        'div[data-testid="Tweet-User-Avatar"] img'
+      );
+
+      if (q_userElement && q_textElement) {
+        const textParts = quoteElement.innerText.split("\n");
+        const q_name = textParts[0] || "User";
+        const q_handle =
+          textParts.find((part) => part.startsWith("@")) || "@unknown";
+        const q_text = q_textElement.innerText;
+        const q_pfpUrl = q_pfpElement ? q_pfpElement.src : "";
+
+        const timeElement = quoteElement.querySelector("time");
+        const rawTimestamp = timeElement
+          ? timeElement.getAttribute("datetime")
+          : "";
+        let q_time = new Date();
+        if (rawTimestamp) {
+          const date = new Date(rawTimestamp);
+          q_time =
+            date.toLocaleTimeString("en-US", {
+              hour: "numeric",
+              minute: "2-digit",
+              hour12: true,
+            }) +
+            " · " +
+            date.toLocaleDateString("en-GB", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            });
+        }
+
+        quotedTweetData = {
+          name: q_name,
+          handle: q_handle,
+          text: q_text,
+          pfpUrl: q_pfpUrl,
+          timestamp: q_time,
+        };
+      }
+    }
+
     // --- Footer (Timestamp only) ---
-    const timeElement = tweetArticle.querySelector("time");
+    const timeElement = tweetArticle.querySelector("a > time");
     const rawTimestamp = timeElement
       ? timeElement.getAttribute("datetime")
       : "";
@@ -201,6 +260,7 @@ function scrapeTweetData(tweetArticle) {
         ? mainContentContainer.innerHTML
         : null,
       pollHTML: pollElement ? pollElement.outerHTML : null,
+      quotedTweet: quotedTweetData,
       mediaItems: mediaItems,
     };
     console.log("XShot Scraped Data:", scrapedData);
@@ -214,6 +274,7 @@ function scrapeTweetData(tweetArticle) {
       timestamp,
       mainContentHTML: "Scrape Error",
       pollHTML: null,
+      quotedTweet: quotedTweetData,
       mediaItems: [],
     };
   }

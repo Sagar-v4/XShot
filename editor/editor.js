@@ -8,8 +8,17 @@ document.addEventListener("DOMContentLoaded", () => {
     "main-content-container"
   );
 
+  // Quoted tweet elements
+  const quoteContainerEl = document.getElementById("quoted-tweet-container");
+  const qNameEl = document.getElementById("q-name");
+  const qHandleEl = document.getElementById("q-handle");
+  const qTextEl = document.getElementById("q-text");
+  const qPfpEl = document.getElementById("q-pfp");
+  const qTimestamp = document.getElementById("q-timestamp");
+
   const pollContainer = document.getElementById("poll-container");
   const mediaContainer = document.getElementById("media-container");
+  const quotedPostContainer = document.getElementById("quoted-post-container");
   const timestampContainer = document.getElementById("timestamp-container");
   const themeSelect = document.getElementById("theme-select");
   const dimensionSelect = document.getElementById("dimension-select");
@@ -36,6 +45,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     if (pollContainer.innerHTML) {
       pollContainer.style.display = shouldHideExtras ? "none" : "block";
+    }
+    if (quotedPostContainer) {
+      quotedPostContainer.style.display = shouldHideExtras ? "none" : "block";
     }
   });
 
@@ -121,6 +133,15 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         pollContainer.innerHTML = null;
         pollContainer.style.display = "none";
+      }
+
+      if (data.quotedTweet) {
+        qNameEl.innerText = data.quotedTweet.name;
+        qHandleEl.innerText = data.quotedTweet.handle;
+        qTextEl.innerText = data.quotedTweet.text;
+        qPfpEl.src = data.quotedTweet.pfpUrl;
+        qTimestamp.innerText = data.quotedTweet.timestamp;
+        quoteContainerEl.style.display = "block";
       }
 
       if (data.mediaItems && data.mediaItems.length > 0) {

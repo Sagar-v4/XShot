@@ -334,6 +334,79 @@ body {
   aspect-ratio: 1 / 1; /* 4-image grids are square */
 }
 
+/* --- QUOTED POST STYLES --- */
+.snapshot-quoted-post {
+  margin-top: 12px;
+}
+.snapshot-quoted-post > div {
+  border: 1px solid var(--light-border);
+  border-radius: 16px;
+  padding: 12px;
+}
+.theme-dim .snapshot-quoted-post > div {
+  border-color: var(--dim-border);
+}
+.theme-dark .snapshot-quoted-post > div {
+  border-color: var(--dark-border);
+}
+
+/* Ensure the header inside the quote is smaller */
+.snapshot-quoted-post [data-testid="User-Name"] {
+  font-size: 0.9em;
+}
+.snapshot-quoted-post [data-testid="Tweet-User-Avatar"] {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+/* Ensure the text inside the quote is smaller */
+.snapshot-quoted-post [data-testid="tweetText"] {
+  font-size: 0.9em;
+  margin-top: 4px;
+}
+
+/* Ensure media inside the quote is also handled */
+.snapshot-quoted-post .snapshot-media {
+  margin-top: 8px;
+}
+#quoted-tweet-container {
+  display: none; /* Hidden by default */
+  margin-top: 12px;
+  border-radius: 16px;
+  padding: 12px;
+  border: 1px solid #cfd9de;
+}
+.dark-theme #quoted-tweet-container {
+  border-color: #38444d;
+}
+.quoted-tweet-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+#q-pfp {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+.q-user-info .name {
+  font-size: 15px;
+  font-weight: bold;
+}
+.q-user-info .handle {
+  font-size: 15px;
+}
+.q-user-info .timestamp {
+  font-size: 13px;
+}
+.quoted-tweet-text {
+  font-size: 15px;
+  line-height: 1.3;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
 /* --- TEXT ONLY MODE --- */
 .text-only-mode [data-testid="tweetPhoto"],
 .text-only-mode [data-testid="videoPlayer"],
