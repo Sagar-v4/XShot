@@ -130,6 +130,12 @@ function scrapeTweetData(tweetArticle) {
       mainContentContainer = tweetTextElement.parentElement;
     }
 
+    // --- Poll HTML (Scraped Separately) ---
+    // We look for the poll card wrapper specifically.
+    const pollElement = tweetArticle.querySelector(
+      '[data-testid="card.wrapper"] [data-testid="cardPoll"]'
+    );
+
     // --- Footer (Timestamp only) ---
     const timeElement = tweetArticle.querySelector("time");
     const rawTimestamp = timeElement
@@ -159,6 +165,7 @@ function scrapeTweetData(tweetArticle) {
       mainContentHTML: mainContentContainer
         ? mainContentContainer.innerHTML
         : "Content not found.",
+      pollHTML: pollElement ? pollElement.outerHTML : null,
     };
     console.log("XShot Scraped Data:", scrapedData);
     return scrapedData;
@@ -170,6 +177,7 @@ function scrapeTweetData(tweetArticle) {
       pfpUrl,
       timestamp,
       mainContentHTML: "Scrape Error",
+      pollHTML: null,
     };
   }
 }

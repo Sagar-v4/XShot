@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const mainContentContainer = document.getElementById(
     "main-content-container"
   );
+
+  const pollContainer = document.getElementById("poll-container");
   const timestampContainer = document.getElementById("timestamp-container");
   const themeSelect = document.getElementById("theme-select");
   const dimensionSelect = document.getElementById("dimension-select");
@@ -22,6 +24,15 @@ document.addEventListener("DOMContentLoaded", () => {
       "theme-dark"
     );
     snapshotContainer.classList.add(e.target.value);
+  });
+
+  // Re-render when the "Text Only" checkbox is changed
+  textOnlyCheckbox.addEventListener("change", () => {
+    if (textOnlyCheckbox.checked) {
+      pollContainer.style.display = "none";
+    } else {
+      pollContainer.style.display = "block";
+    }
   });
 
   dimensionSelect.addEventListener("change", (e) => {
@@ -99,6 +110,14 @@ document.addEventListener("DOMContentLoaded", () => {
       pfpEl.src = data.pfpUrl;
       mainContentContainer.innerHTML = data.mainContentHTML;
       timestampContainer.innerHTML = data.timestamp;
+
+      if (data.pollHTML) {
+        pollContainer.innerHTML = data.pollHTML;
+        pollContainer.style.display = "block";
+      } else {
+        pollContainer.innerHTML = null;
+        pollContainer.style.display = "none";
+      }
 
       // Set initial control states
       fontSizeInput.dispatchEvent(new Event("input"));

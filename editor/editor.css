@@ -161,6 +161,91 @@ body {
   border-color: var(--dark-border);
 }
 
+/* --- POLL STYLES --- */
+.snapshot-poll {
+  margin-top: 12px;
+}
+.snapshot-poll [data-testid="cardPoll"] {
+  border: 1px solid;
+  border-radius: 16px;
+  padding: 12px;
+}
+.theme-light .snapshot-poll [data-testid="cardPoll"] {
+  border-color: var(--light-border);
+}
+.theme-dim .snapshot-poll [data-testid="cardPoll"] {
+  border-color: var(--dim-border);
+}
+.theme-dark .snapshot-poll [data-testid="cardPoll"] {
+  border-color: var(--dark-border);
+}
+.snapshot-poll ul {
+  padding: 0px;
+  margin-top: 6px;
+}
+.snapshot-poll li {
+  list-style: none;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+.snapshot-poll .r-1awozwy.r-18u37iz {
+  position: relative;
+  height: 32px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 12px;
+  overflow: hidden;
+}
+.snapshot-poll .r-hv4q04 {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  border-radius: 4px;
+}
+.r-18u37iz > span {
+  margin-inline: 2px;
+}
+.snapshot-poll .r-1mkv55d,
+.snapshot-poll .r-2dysd3 {
+  z-index: 1;
+  position: relative;
+}
+
+/* --- Theme-specific poll colors --- */
+/* Poll result, count, description colors */
+.theme-light .snapshot-poll .r-18u37iz > span {
+  color: var(--light-text-secondary);
+}
+.theme-dim .snapshot-poll .r-18u37iz > span {
+  color: var(--dim-text-secondary);
+}
+.theme-dark .snapshot-poll .r-18u37iz > span {
+  color: var(--dark-text-secondary);
+}
+/* Poll bar colors */
+.theme-light .snapshot-poll .r-hv4q04 {
+  background-color: var(--dark-text);
+}
+.theme-dim .snapshot-poll .r-hv4q04 {
+  background-color: var(--dim-border);
+}
+.theme-dark .snapshot-poll .r-hv4q04 {
+  background-color: var(--dark-border);
+}
+/* Poll text colors */
+.theme-light .snapshot-poll .css-146c3p1 {
+  color: var(--light-text) !important;
+}
+.theme-dim .snapshot-poll .css-146c3p1 {
+  color: var(--dim-text) !important;
+}
+.theme-dark .snapshot-poll .css-146c3p1 {
+  color: var(--dark-text) !important;
+}
+
 /* --- TEXT ONLY MODE --- */
 .text-only-mode [data-testid="tweetPhoto"],
 .text-only-mode [data-testid="videoPlayer"],
