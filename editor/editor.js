@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   const pollContainer = document.getElementById("poll-container");
+  const mediaContainer = document.getElementById("media-container");
   const timestampContainer = document.getElementById("timestamp-container");
   const themeSelect = document.getElementById("theme-select");
   const dimensionSelect = document.getElementById("dimension-select");
@@ -27,11 +28,14 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Re-render when the "Text Only" checkbox is changed
-  textOnlyCheckbox.addEventListener("change", () => {
-    if (textOnlyCheckbox.checked) {
-      pollContainer.style.display = "none";
-    } else {
-      pollContainer.style.display = "block";
+  textOnlyCheckbox.addEventListener("change", (e) => {
+    const shouldHideExtras = e.target.checked;
+
+    if (mediaContainer.innerHTML) {
+      mediaContainer.style.display = shouldHideExtras ? "none" : "grid";
+    }
+    if (pollContainer.innerHTML) {
+      pollContainer.style.display = shouldHideExtras ? "none" : "block";
     }
   });
 
@@ -117,6 +121,39 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         pollContainer.innerHTML = null;
         pollContainer.style.display = "none";
+      }
+
+      if (data.mediaItems && data.mediaItems.length > 0) {
+        const mediaCount = data.mediaItems.length;
+
+        // Apply the correct layout class to the container
+        mediaContainer.className = "snapshot-media"; // Reset classes
+        mediaContainer.classList.add(`layout-${Math.min(mediaCount, 4)}`);
+
+        // Build the grid items from our clean data
+        data.mediaItems.forEach((item) => {
+          const cell = document.createElement("div");
+          cell.className = "media-cell";
+
+          const img = document.createElement("img");
+          img.src = item.url;
+          cell.appendChild(img);
+
+          // Add a play icon overlay for videos/GIFs
+          if (item.type === "video") {
+            const playIcon = document.createElement("div");
+            playIcon.className = "play-icon-overlay";
+            playIcon.innerHTML = `<svg viewBox="0 0 24 24"><g><path d="M8 5v14l11-7z"></path></g></svg>`;
+            cell.appendChild(playIcon);
+          }
+
+          mediaContainer.appendChild(cell);
+        });
+
+        mediaContainer.style.display = "grid";
+      } else {
+        mediaContainer.innerHTML = null;
+        mediaContainer.style.display = "none";
       }
 
       // Set initial control states

@@ -127,8 +127,43 @@ function scrapeTweetData(tweetArticle) {
 
     // 2. Select its direct parent. This container reliably holds the text, media, polls, etc.
     if (tweetTextElement) {
-      mainContentContainer = tweetTextElement.parentElement;
+      const tempContainer = tweetTextElement.parentElement.cloneNode(true);
+      const translateButton = tempContainer.querySelector(
+        'button[role="button"][aria-expanded="false"]'
+      );
+      if (
+        translateButton &&
+        translateButton.innerText.toLowerCase().includes("translate")
+      ) {
+        translateButton.remove();
+      }
+      mainContentContainer = tempContainer;
+    } else {
+      mainContentContainer = null;
     }
+
+    // --- Media HTML (Scraped Separately) ---
+    const mediaItems = [];
+    // This selector finds all photo, video, and GIF elements.
+    const mediaElements = tweetArticle.querySelectorAll(
+      '[data-testid="tweetPhoto"] img, [data-testid="videoPlayer"] video'
+    );
+
+    mediaElements.forEach((el) => {
+      if (el.tagName === "IMG") {
+        // It's a photo.
+        mediaItems.push({
+          type: "image",
+          url: el.src.replace(/name=\w+$/, "name=large"), // Get high-res version
+        });
+      } else if (el.tagName === "VIDEO") {
+        // It's a video or a GIF. We just need the thumbnail (poster).
+        mediaItems.push({
+          type: "video", // We'll treat GIFs and videos the same visually
+          url: el.poster, // The poster attribute holds the thumbnail URL
+        });
+      }
+    });
 
     // --- Poll HTML (Scraped Separately) ---
     // We look for the poll card wrapper specifically.
@@ -164,8 +199,9 @@ function scrapeTweetData(tweetArticle) {
       timestamp,
       mainContentHTML: mainContentContainer
         ? mainContentContainer.innerHTML
-        : "Content not found.",
+        : null,
       pollHTML: pollElement ? pollElement.outerHTML : null,
+      mediaItems: mediaItems,
     };
     console.log("XShot Scraped Data:", scrapedData);
     return scrapedData;
@@ -178,6 +214,7 @@ function scrapeTweetData(tweetArticle) {
       timestamp,
       mainContentHTML: "Scrape Error",
       pollHTML: null,
+      mediaItems: [],
     };
   }
 }
