@@ -198,7 +198,7 @@ document.addEventListener("DOMContentLoaded", () => {
       textOnlyCheckbox.dispatchEvent(new Event("change"));
       hideDateTimeCheckbox.dispatchEvent(new Event("change"));
 
-      // chrome.storage.local.remove("dataForSnapshot");
+      chrome.storage.local.remove("dataForSnapshot");
     } else {
       chrome.storage.local.remove("dataForSnapshot");
       document.body.innerHTML =
