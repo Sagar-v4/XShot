@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   // --- Element References ---
   const snapshotContainer = document.getElementById("snapshot-container");
+  const snapshotFooter = document.getElementById("snapshot-footer");
   const nameEl = document.getElementById("name");
   const handleEl = document.getElementById("handle");
   const pfpEl = document.getElementById("pfp");
@@ -24,6 +25,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const dimensionSelect = document.getElementById("dimension-select");
   const fontSizeInput = document.getElementById("font-size-input");
   const textOnlyCheckbox = document.getElementById("text-only-checkbox");
+  const hideDateTimeCheckbox = document.getElementById(
+    "hide-date-time-checkbox"
+  );
   const downloadBtn = document.getElementById("download-btn");
 
   // --- Event Listeners ---
@@ -38,16 +42,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Re-render when the "Text Only" checkbox is changed
   textOnlyCheckbox.addEventListener("change", (e) => {
-    const shouldHideExtras = e.target.checked;
+    const shouldHide = e.target.checked;
 
     if (mediaContainer.innerHTML) {
-      mediaContainer.style.display = shouldHideExtras ? "none" : "grid";
+      mediaContainer.style.display = shouldHide ? "none" : "grid";
     }
     if (pollContainer.innerHTML) {
-      pollContainer.style.display = shouldHideExtras ? "none" : "block";
+      pollContainer.style.display = shouldHide ? "none" : "block";
     }
     if (quotedPostContainer) {
-      quotedPostContainer.style.display = shouldHideExtras ? "none" : "block";
+      quotedPostContainer.style.display = shouldHide ? "none" : "block";
+    }
+  });
+
+  // Re-render when the "Hide Date and Time" checkbox is changed
+  hideDateTimeCheckbox.addEventListener("change", (e) => {
+    const shouldHide = e.target.checked;
+
+    if (timestampContainer.innerHTML) {
+      timestampContainer.style.display = shouldHide ? "none" : "block";
+    }
+    if (snapshotFooter.innerHTML) {
+      snapshotFooter.style.display = shouldHide ? "none" : "block";
     }
   });
 
@@ -180,6 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Set initial control states
       fontSizeInput.dispatchEvent(new Event("input"));
       textOnlyCheckbox.dispatchEvent(new Event("change"));
+      hideDateTimeCheckbox.dispatchEvent(new Event("change"));
 
       // chrome.storage.local.remove("dataForSnapshot");
     } else {
