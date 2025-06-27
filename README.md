@@ -6,7 +6,7 @@ Create perfect, clean, and customizable snapshots of X(Twitter) posts in one cli
 
 ## Motivation
 
-Sharing X(tweeter) post on other platforms like Instagram, LinkedIn, or in news articles is a common practice. However, simply taking a screenshot often results in a low-quality, cluttered, and poorly-sized image. It includes unnecessary UI elements, uses relative timestamps (e.g., "1h ago"), and doesn't adapt well to different platform dimensions.
+Sharing X(twitter) post on other platforms like Instagram, LinkedIn, or in news articles is a common practice. However, simply taking a screenshot often results in a low-quality, cluttered, and poorly-sized image. It includes unnecessary UI elements, uses relative timestamps (e.g., "1h ago"), and doesn't adapt well to different platform dimensions.
 
 XShot was built to solve these problems by providing a seamless, one-click tool to generate beautiful and professional-looking tweet snapshots right from your browser.
 
